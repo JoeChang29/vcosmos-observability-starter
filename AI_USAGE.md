@@ -15,6 +15,7 @@ AI 協助完成哪些部分
 3. 各種除錯：otel收不到log
 4. ASSIGNMENT 5 incident>Metrics顯示了什麼
 5. ASSIGNMENT 5 incident>Long-term improvement
+6. 加分項目
 
 ## 如何驗證 AI 產生的設定或程式碼
 1. 看過以及修改，確認環境可控即可應用
