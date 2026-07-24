@@ -126,3 +126,21 @@ http://localhost:16686
 
 ## 已知限制
 1. 在docker-compose.yml裡面api-service, inventory-service如果有debug需求可以將參數OTEL_LOG_LEVEL調整為為debug,console, console參數，但是可能導致log過於龐大，不建議長時間開啟或者爆量測試
+
+## alert setting
+```text
+建立一個和使用者影響有關的告警（例如 error rate 過高或 p95 latency 過高）。請在 README 中簡短說明：
+
+會建立p95 latency>100ms告警
+
+1. 為什麼選擇這個指標
+>p95最直接相關，request rate過高可能導致延遲也會增高，但也是次要因素，error rate在這裡比較派不上用場，回覆都是200
+
+2. Threshold 如何決定
+>在正常情況下p95延遲指標通常不超過50ms, 抓100ms也是人體無法察覺的速度且避免日後更新或者整體網路因素導致延遲升高
+
+3. 如何避免短暫波動造成過多告警
+>以目前平均延遲設定告警為兩倍做初步手段
+>將告警設定為連續5分鐘都滿足條件且至少每分鐘抓取一次
+>配合request rate聯動，如果p95延遲上升滿足5分鐘但request rate五分鐘內下降超過20%
+```
