@@ -1,7 +1,11 @@
 FROM python:3.11-slim
 WORKDIR /app
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt \
+    opentelemetry-instrumentation \
+    opentelemetry-exporter-otlp \
+    opentelemetry-instrumentation-fastapi \
+    opentelemetry-instrumentation-httpx
 
 # 自動檢測並安裝該環境需要的 instrumentation 套件
 RUN opentelemetry-bootstrap -a install
