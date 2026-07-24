@@ -20,4 +20,4 @@ AI 協助完成哪些部分
 1. inventory-service部分修改：AI建議將部份程式碼縮排、改寫，以及刪掉註解
 
 修改：
-1. inventory-service：AI建議修改inventory-service的requirements.txt, 這裡以修改Dockerfile替代
+1. inventory-service：AI建議修改inventory-service以及api-service的requirements.txt/app.py, 這裡以修改Dockerfile替代
