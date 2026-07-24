@@ -1,8 +1,26 @@
 import os
+import logging
+import sys
 from contextlib import asynccontextmanager
-
 import httpx
 from fastapi import FastAPI, HTTPException
+
+# ---------------------------------------------------------------------------
+# Logging & OpenTelemetry Trace Correlation Setup
+# ---------------------------------------------------------------------------
+# 👈 [新增] 定義結構化 JSON 的 Log 格式
+log_format = (
+    '{"time": "%(asctime)s", "level": "%(levelname)s", "service": "api-service", '
+    '"trace_id": "%(otelTraceID)s", "span_id": "%(otelSpanID)s", '
+    '"message": "%(message)s"}'
+)
+
+logging.basicConfig(
+    stream=sys.stdout,
+    level=logging.INFO,
+    format=log_format
+)
+logger = logging.getLogger(__name__)
 
 # ---------------------------------------------------------------------------
 # api-service
@@ -43,17 +61,22 @@ async def health():
 
 @app.get("/products/{sku}")
 async def get_product(sku: str):
+    logger.info(f"Received request to fetch product info for SKU: {sku}")
+
     client: httpx.AsyncClient = app.state.client
     try:
         resp = await client.get(f"{INVENTORY_URL}/stock/{sku}")
         resp.raise_for_status()
     except httpx.TimeoutException:
+        logger.error(f"Timeout while calling inventory-service for SKU: {sku}")
         raise HTTPException(status_code=504, detail="inventory-service timeout")
     except httpx.HTTPError as exc:
+        logger.error(f"HTTP error while calling inventory-service for SKU: {sku} - {exc}")
         raise HTTPException(status_code=502, detail=f"inventory-service error: {exc}")
 
     stock = resp.json()
     meta = CATALOG.get(sku, {"name": f"Unknown {sku}", "price": 9.99})
+    logger.info(f"Successfully retrieved product info for SKU: {sku}")
     return {
         "sku": sku,
         "name": meta["name"],

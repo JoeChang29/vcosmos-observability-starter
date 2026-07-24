@@ -1,9 +1,10 @@
 import asyncio
+import logging
+import sys
 import os
 import random
 from contextlib import asynccontextmanager
 from typing import Optional
-
 from fastapi import FastAPI
 from pydantic import BaseModel
 
@@ -20,6 +21,20 @@ from pydantic import BaseModel
 # NOTE: this service intentionally ships WITHOUT metrics or tracing. Adding
 # observability is part of the assignment.
 # ---------------------------------------------------------------------------
+
+log_format = (
+    '{"time": "%(asctime)s", "level": "%(levelname)s", '
+    '"trace_id": "%(otelTraceID)s", "span_id": "%(otelSpanID)s", '
+    '"message": "%(message)s"}'
+)
+
+# 2. 初始化基本設定
+logging.basicConfig(
+    stream=sys.stdout,
+    level=logging.INFO,
+    format=log_format
+)
+logger = logging.getLogger(__name__)
 
 BASE_LATENCY_MS = int(os.getenv("INVENTORY_BASE_LATENCY_MS", "15"))
 
@@ -63,11 +78,14 @@ async def health():
 
 @app.get("/stock/{sku}")
 async def get_stock(sku: str):
+    logger.info(f"Checking stock for SKU: {sku}")
+
     # Normal "database" lookup latency.
     await asyncio.sleep(BASE_LATENCY_MS / 1000.0 + random.uniform(0, 0.01))
 
     # In the degraded state, a fraction of lookups hit a slow path.
     if state.enabled and random.random() < state.probability:
+        logger.warning(f"Degraded state triggered for SKU: {sku}, delaying {state.latency_ms}ms")
         await asyncio.sleep(state.latency_ms / 1000.0)
 
     return {"sku": sku, "quantity": _stock_for(sku), "warehouse": "TPE-1"}
