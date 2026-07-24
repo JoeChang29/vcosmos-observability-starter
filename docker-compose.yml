@@ -53,7 +53,7 @@ services:
     container_name: otel-collector
     command: ["--config=/etc/otel-collector-config.yaml"]
     volumes:
-      - ./monitor-file/otel-collector-config.yaml:/etc/otel-collector-config.yaml
+      - ./monitor-files/otel-collector-config.yaml:/etc/otel-collector-config.yaml
     ports:
       - "4317:4317"   # OTLP gRPC receiver
       - "4318:4318"   # OTLP HTTP receiver
@@ -75,7 +75,7 @@ services:
     image: prom/prometheus:latest
     container_name: prometheus
     volumes:
-      - ./monitor-file/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./monitor-files/prometheus.yml:/etc/prometheus/prometheus.yml
     ports:
       - "9090:9090"
     depends_on:
