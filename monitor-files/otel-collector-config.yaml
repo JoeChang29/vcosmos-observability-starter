@@ -11,6 +11,9 @@ processors:
 
 exporters:
   # 將 Traces 送往 Jaeger
+  debug:
+    verbosity: detailed
+
   otlp/jaeger:
     endpoint: jaeger:4317
     tls:
@@ -25,7 +28,7 @@ service:
     traces:
       receivers: [otlp]
       processors: [batch]
-      exporters: [otlp/jaeger]
+      exporters: [debug, otlp/jaeger]
     metrics:
       receivers: [otlp]
       processors: [batch]
