@@ -14,9 +14,11 @@ AI 協助完成哪些部分
 2. docker-compose範本提供
 3. 各種除錯：otel收不到log
 4. ASSIGNMENT 5 incident>Metrics顯示了什麼
+5. ASSIGNMENT 5 incident>Long-term improvement
 
 ## 如何驗證 AI 產生的設定或程式碼
-
+1. 看過以及修改，確認環境可控即可應用
+2. 如果不熟悉相關工具，在與AI確認各項疑慮後再行使用
 
 ## 至少一項你修改或沒有採用的 AI 建議
 無採用：
