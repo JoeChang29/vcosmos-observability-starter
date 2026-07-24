@@ -35,6 +35,8 @@ services:
       interval: 5s
       timeout: 3s
       retries: 5
+    networks:
+      - app-network
 
   api-service:
     build: ./api-service
@@ -56,6 +58,8 @@ services:
         condition: service_healthy
       otel-collector:
         condition: service_started
+    networks:
+      - app-network
 
   # Traffic generator. Kept behind a profile so `docker compose up` starts only
   # the services; start traffic explicitly when you want it.
@@ -68,6 +72,8 @@ services:
       - api-service
     profiles: ["loadgen"]
     restart: unless-stopped
+    networks:
+      - app-network
 
   otel-collector:
     image: otel/opentelemetry-collector-contrib:latest
@@ -82,6 +88,8 @@ services:
     depends_on:
       jaeger:
         condition: service_started
+    networks:
+      - app-network
 
   jaeger:
     image: jaegertracing/all-in-one:latest
@@ -91,6 +99,8 @@ services:
       - "4317"        # OTLP gRPC
     environment:
       - COLLECTOR_OTLP_ENABLED=true
+    networks:
+      - app-network
 
   prometheus:
     image: prom/prometheus:latest
@@ -101,6 +111,8 @@ services:
       - "9090:9090"
     depends_on:
       - otel-collector
+    networks:
+      - app-network
 
   grafana:
     image: grafana/grafana:latest
@@ -112,3 +124,9 @@ services:
     depends_on:
       - prometheus
       - jaeger
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
