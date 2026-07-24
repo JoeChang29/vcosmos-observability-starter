@@ -1,0 +1,60 @@
+name: vCosmos API & Inventory CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      # --- 1. 安裝兩個服務的依賴套件 ---
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest httpx
+          
+          # 安裝 api-service 依賴
+          pip install -r api-service/requirements.txt
+          
+          # 安裝 inventory-service 依賴
+          pip install -r inventory-service/requirements.txt
+
+      # --- 2. 執行 Application Tests ---
+      - name: Run API Service test (pytest)
+        run: |
+          cd api-service
+          pytest
+
+      # 執行 Inventory Service 測試
+      - name: Run Inventory Service test (pytest)
+        run: |
+          cd inventory-service
+          pytest
+
+      # --- 3. 驗證 Docker Compose 設定檔 ---
+      - name: Docker Compose configuration validation
+        run: |
+          docker compose config -q
+
+      # --- 4. 測試 Docker Build ---
+      - name: Docker build API Service
+        run: |
+          docker compose build api-service
+
+      # 測試編譯 Inventory Service 映像檔
+      - name: Docker build Inventory Service
+        run: |
+          docker compose build inventory-service
