@@ -27,4 +27,4 @@ http://localhost:16686
 
 
 ## 已知限制
-1. 在docker-compose.yml裡面api-service, inventory-service參數OTEL_LOG_LEVEL為debug,console, console參數可能導致log過於龐大，不建議長時間開啟或者爆量測試
+1. 在docker-compose.yml裡面api-service, inventory-service如果有debug需求可以將參數OTEL_LOG_LEVEL調整為為debug,console, console參數，但是可能導致log過於龐大，不建議長時間開啟或者爆量測試
