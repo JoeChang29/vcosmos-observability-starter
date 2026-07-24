@@ -19,6 +19,15 @@ services:
       INVENTORY_DEGRADED: "false"
       INVENTORY_DEGRADED_LATENCY_MS: "2000"
       INVENTORY_DEGRADED_PROBABILITY: "0.3"
+      # --- 新增 OpenTelemetry 配置 ---
+      OTEL_SERVICE_NAME: "inventory-service"
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://otel-collector:4317"
+      OTEL_EXPORTER_OTLP_INSECURE: "true"
+      OTEL_TRACES_EXPORTER: "otlp"
+      OTEL_METRICS_EXPORTER: "otlp"
+    depends_on:
+      otel-collector:
+        condition: service_started
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8001/health').status==200 else 1)"]
       interval: 5s
@@ -32,9 +41,17 @@ services:
     environment:
       INVENTORY_URL: "http://inventory-service:8001"
       UPSTREAM_TIMEOUT_S: "3.0"
+      # --- 新增 OpenTelemetry 配置 ---
+      OTEL_SERVICE_NAME: "inventory-service"
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://otel-collector:4317"
+      OTEL_EXPORTER_OTLP_INSECURE: "true"
+      OTEL_TRACES_EXPORTER: "otlp"
+      OTEL_METRICS_EXPORTER: "otlp"
     depends_on:
       inventory-service:
         condition: service_healthy
+      otel-collector:
+        condition: service_started
 
   # Traffic generator. Kept behind a profile so `docker compose up` starts only
   # the services; start traffic explicitly when you want it.
