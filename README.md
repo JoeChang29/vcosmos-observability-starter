@@ -85,3 +85,44 @@ SKU 範圍為 `sku-1` ～ `sku-20`。
 - 沒有 metrics、tracing、logging 之外的標準輸出。
 - 沒有持久化儲存；庫存為記憶體內的模擬資料。
 - 僅供本機評估使用，非 production 設定。
+
+
+--------------------
+-------分隔線-------
+--------------------
+
+# 這裡是readme的答案區
+
+## 如何啟動環境
+```bash
+docker compose up --build
+```
+
+## 如何產生測試流量 如何觸發異常
+```bash
+#產生測試流量
+docker compose --profile loadgen up loadgen
+
+#觸發異常
+bash scripts/trigger_incident.sh
+```
+
+## Grafana 與 trace UI 的位置
+### Grafana
+```text
+http://localhost:3000
+#set data source to http://prometheus:9090
+#user:pwd is admin:admin for convenience
+```
+
+### trace UI - Jaeger
+```text
+http://localhost:16686
+```
+
+## 如何驗證成果
+1. 修改inventory-service/app.py腳本
+2. 重新觸發流量以及異常，確認修復
+
+## 已知限制
+1. 在docker-compose.yml裡面api-service, inventory-service如果有debug需求可以將參數OTEL_LOG_LEVEL調整為為debug,console, console參數，但是可能導致log過於龐大，不建議長時間開啟或者爆量測試
