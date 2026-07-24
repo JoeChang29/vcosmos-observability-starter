@@ -10,7 +10,7 @@ AI 協助完成哪些部分
 1. Gemini
 
 ## AI 協助完成哪些部分
-1. OpenTelemetry注入：inventory-service以及api-service
+1. OpenTelemetry Zero-code Auto-Instrumentation注入：inventory-service以及api-service
 
 ## 如何驗證 AI 產生的設定或程式碼
 
