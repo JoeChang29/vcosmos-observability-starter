@@ -93,6 +93,8 @@ SKU 範圍為 `sku-1` ～ `sku-20`。
 
 # 這裡是readme的答案區
 
+Note: 還有一些答案在assignments資料夾下
+
 ## 如何啟動環境
 ```bash
 docker compose up --build
