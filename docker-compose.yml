@@ -26,7 +26,7 @@ services:
       OTEL_EXPORTER_OTLP_INSECURE: "true"
       OTEL_TRACES_EXPORTER: "otlp"
       OTEL_METRICS_EXPORTER: "otlp"
-      OTEL_LOG_LEVEL: "debug"
+      OTEL_LOG_LEVEL: "debug,console"
     depends_on:
       otel-collector:
         condition: service_started
@@ -52,7 +52,7 @@ services:
       OTEL_EXPORTER_OTLP_INSECURE: "true"
       OTEL_TRACES_EXPORTER: "otlp"
       OTEL_METRICS_EXPORTER: "otlp"
-      OTEL_LOG_LEVEL: "debug"
+      OTEL_LOG_LEVEL: "debug,console"
     depends_on:
       inventory-service:
         condition: service_healthy
