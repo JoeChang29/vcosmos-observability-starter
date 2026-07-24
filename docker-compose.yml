@@ -96,7 +96,6 @@ services:
     container_name: jaeger
     ports:
       - "16686:16686" # Jaeger UI
-      - "4317"        # OTLP gRPC
     environment:
       - COLLECTOR_OTLP_ENABLED=true
     networks:
