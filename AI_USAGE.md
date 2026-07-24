@@ -1,4 +1,4 @@
-Guidance:
+Guidance from README.md:
 使用了哪些 AI 工具
 AI 協助完成哪些部分
 如何驗證 AI 產生的設定或程式碼
