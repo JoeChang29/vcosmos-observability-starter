@@ -11,6 +11,8 @@ AI 協助完成哪些部分
 
 ## AI 協助完成哪些部分
 1. OpenTelemetry Zero-code Auto-Instrumentation注入：inventory-service以及api-service
+2. docker-compose範本提供
+3. 各種除錯：otel收不到log
 
 ## 如何驗證 AI 產生的設定或程式碼
 
@@ -21,3 +23,4 @@ AI 協助完成哪些部分
 
 修改：
 1. inventory-service：AI建議修改inventory-service以及api-service的requirements.txt/app.py, 這裡以修改Dockerfile替代
+2. docker-compose範本修改：修改名稱、資料夾結構
