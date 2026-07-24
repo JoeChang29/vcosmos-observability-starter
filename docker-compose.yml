@@ -21,7 +21,7 @@ services:
       INVENTORY_DEGRADED_PROBABILITY: "0.3"
       # --- 新增 OpenTelemetry 配置 ---
       OTEL_SERVICE_NAME: "inventory-service"
-      OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: "http://otel-collector:4317"
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://otel-collector:4317"
       OTEL_EXPORTER_OTLP_PROTOCOL: "grpc"
       OTEL_EXPORTER_OTLP_INSECURE: "true"
       OTEL_TRACES_EXPORTER: "otlp"
@@ -47,7 +47,7 @@ services:
       UPSTREAM_TIMEOUT_S: "3.0"
       # --- 新增 OpenTelemetry 配置 ---
       OTEL_SERVICE_NAME: "api-service"
-      OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: "http://otel-collector:4317"
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://otel-collector:4317"
       OTEL_EXPORTER_OTLP_PROTOCOL: "grpc"
       OTEL_EXPORTER_OTLP_INSECURE: "true"
       OTEL_TRACES_EXPORTER: "otlp"
